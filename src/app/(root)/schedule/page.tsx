@@ -1,8 +1,18 @@
-export default function SchedulePage() {
-  return (
-    <div className="container mx-auto p-6">
-      <h1 className="text-3xl font-bold">Schedule Page</h1>
-      <p className="text-muted-foreground">Manage and view scheduled interviews.</p>
-    </div>
-  );
+"use client";
+
+import LoaderUI from "@/components/LoaderUI";
+import { useUserRole } from "@/hooks/useUserRole";
+import { useRouter } from "next/navigation";
+import InterviewScheduleUI from "./InterviewScheduleUI";
+
+function SchedulePage() {
+  const router = useRouter();
+
+  const { isInterviewer, isLoading } = useUserRole();
+
+  if (isLoading) return <LoaderUI />;
+  if (!isInterviewer) return router.push("/");
+
+  return <InterviewScheduleUI />;
 }
+export default SchedulePage;

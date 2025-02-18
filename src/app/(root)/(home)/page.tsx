@@ -5,15 +5,20 @@ import { QUICK_ACTIONS } from "@/constants";
 import { useUserRole } from "@/hooks/useUserRole";
 import { useState } from "react";
 import MeetingModal from "@/components/MeetingModal";
-import { useRouter } from "next/navigation"; // ✅ Correct import
+import { useRouter } from "next/navigation"; 
+import { api } from "../../../../convex/_generated/api";
+import { useQuery } from "convex/react";
+import LoaderUI from "@/components/LoaderUI";
+
 
 export default function Home() {
   console.log("QUICK_ACTIONS:", QUICK_ACTIONS);
 
-  const { isInterviewer } = useUserRole();
+  const { isInterviewer, isCandidate, isLoading  } = useUserRole();
+  const interviews = useQuery(api.interviews.getMyInterviews);
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState<"start" | "join">();
-  const router = useRouter(); // ✅ Correct way to use router in client components
+  const router = useRouter(); 
 
   const handleQuickAction = (title: string) => {
     switch (title) {
@@ -26,10 +31,10 @@ export default function Home() {
         setShowModal(true);
         break;
       default:
-        router.push(`/${title.toLowerCase()}`); // ✅ Now it works correctly
+        router.push(`/${title.toLowerCase()}`); 
     }
   };
-
+ if(isLoading) return<LoaderUI/>
   return (
     <div className="container max-w-7xl mx-auto p-6">
       {/* WELCOME SECTION */}
@@ -43,7 +48,7 @@ export default function Home() {
             : "Access your upcoming interviews and preparations"}
         </p>
       </div>
-
+{/* if it is inteviewer then, performe the action interviewer want */}
       {isInterviewer ? (
         <>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -55,7 +60,7 @@ export default function Home() {
               />
             ))}
           </div>
-
+{/* meeting model decide if interviewer crate the meeeting and join meeting by using option */}
           <MeetingModal
             isOpen={showModal}
             onClose={() => setShowModal(false)}

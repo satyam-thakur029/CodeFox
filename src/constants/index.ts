@@ -1,5 +1,7 @@
 import { Clock, Code2, Calendar, Users } from "lucide-react";
 
+
+// this is copy by the github because this way to long to write
 export const INTERVIEW_CATEGORY = [
   { id: "upcoming", title: "Upcoming Interviews", variant: "outline" },
   { id: "completed", title: "Completed", variant: "secondary" },
@@ -25,6 +27,7 @@ export const TIME_SLOTS = [
   "16:00",
   "16:30",
   "17:00",
+  
 ];
 
 export const QUICK_ACTIONS = [

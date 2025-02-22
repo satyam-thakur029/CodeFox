@@ -52,9 +52,8 @@ export const createInterview = mutation({
     if (!identity) throw new Error("Unauthorized");
 
     return await ctx.db.insert("interviews", {
-        ...args,
-        streamdateId: "",
-        interviewersIds: []
+      ...args,
+   
     });
   },
 });

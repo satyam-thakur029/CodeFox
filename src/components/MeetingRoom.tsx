@@ -1,3 +1,5 @@
+"use client";
+
 import { 
   CallControls, 
   CallingState, 
@@ -7,9 +9,16 @@ import {
   useCallStateHooks 
 } from "@stream-io/video-react-sdk";
 
-import { LayoutListIcon, LoaderIcon, UserIcon } from "lucide-react";
+import { 
+  LayoutListIcon, 
+  LoaderIcon, 
+  UserIcon, 
+  LinkIcon 
+} from "lucide-react";
+
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+
 import { 
   ResizableHandle, 
   ResizablePanel, 
@@ -21,7 +30,7 @@ import {
   DropdownMenuContent, 
   DropdownMenuItem, 
   DropdownMenuTrigger 
-} from "@/components/ui/dropdown-menu";  // Ensure correct import
+} from "@/components/ui/dropdown-menu";  
 
 import { Button } from "./ui/button";
 import EndCallButton from "./EndCallButton";
@@ -34,7 +43,19 @@ export default function MeetingRoom() {
   const { useCallCallingState } = useCallStateHooks();
   const callingState = useCallCallingState();
 
-  // ✅ Fix: Ensure Loader returns properly
+  const meetingUrl = typeof window !== "undefined" ? window.location.href : "";
+
+  // Function to copy link to clipboard
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(meetingUrl);
+      alert("Meeting link copied to clipboard!"); // You can replace this with a toast notification
+    } catch (err) {
+      console.error("Failed to copy meeting link:", err);
+    }
+  };
+
+  // ✅ Ensure Loader returns properly
   if (callingState !== CallingState.JOINED) {
     return (
       <div className="h-96 flex items-center justify-center">
@@ -72,7 +93,7 @@ export default function MeetingRoom() {
                 {/* View Dropdown & Participants Button */}
                 <div className="flex items-center gap-2">
                   
-                  {/* ✅ Fix: Proper DropdownMenu implementation */}
+                  {/* ✅ Proper DropdownMenu implementation */}
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button variant="outline" size="icon" className="size-10">
@@ -97,6 +118,16 @@ export default function MeetingRoom() {
                     onClick={() => setShowParticipants(!showParticipants)}
                   >
                     <UserIcon className="size-4" />
+                  </Button>
+
+                  {/* ✅ Copy Link Button */}
+                  <Button 
+                    variant="outline" 
+                    size="icon" 
+                    className="size-10" 
+                    onClick={handleCopyLink}
+                  >
+                    <LinkIcon className="size-4" />
                   </Button>
 
                   <EndCallButton />

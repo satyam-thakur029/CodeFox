@@ -1,10 +1,9 @@
-
 import { useCall, useCallStateHooks } from "@stream-io/video-react-sdk";
 import { useMutation, useQuery } from "convex/react";
 import { useRouter } from "next/navigation";
+import { api } from "../../convex/_generated/api";
 import { Button } from "./ui/button";
 import toast from "react-hot-toast";
-import { api } from "../../convex/_generated/api";
 
 function EndCallButton() {
   const call = useCall();
@@ -43,7 +42,7 @@ function EndCallButton() {
 
   return (
     <Button variant={"destructive"} onClick={endCall}>
-      End Meeting 
+      End Meeting
     </Button>
   );
 }
